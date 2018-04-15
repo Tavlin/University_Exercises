@@ -9,8 +9,8 @@ if [[ "$1" == *-*1* ]]; then
     echo "";
     ./sheet_1;
     
-    mkdir -p GoldenRatio
-    root -q -l -b goldenratio.C\+\(\)
+    #mkdir -p GoldenRatio
+    #root -q -l -b goldenratio.C\+\(\)
  
 fi
 
