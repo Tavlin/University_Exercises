@@ -8,6 +8,9 @@ if [[ "$1" == *-*1* ]]; then
     echo "execute exercise...";
     echo "";
     ./sheet_1;
+    
+    mkdir -p GoldenRatio
+    root -q -l -b goldenratio.C\+\(\)
  
 fi
 
