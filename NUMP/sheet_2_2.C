@@ -1,13 +1,22 @@
+//Pendulum with RK 4th Order
+// \vec{F} = -mge_{z}
+// \phi(t=0) = \phi_{0}
+
+//EOM:
+//d^{2}\phi/dt^2 = -sin(\phi)
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
+#include <fstream>
 
 const int N = 2; //Number of needed Dimensions
 const int num_steps = 1.e4; //Number of steps
 const double tau = 1.e-3; // Stepsize
 
 double y[N][num_steps+1]; // array of 2D points forming the Trajectory
-int main(void){
+void sheet_2_2(void){
   //Initial Conditions
   y[0][0] = M_PI/8; //starting angle
   y[1][0] = 0; //starting velocity
@@ -32,11 +41,19 @@ int main(void){
       y[j][i] = y[j][i-1] + 1./6.*(k1[j]+2*k2[j]+2*k3[j]+k4[j]);
     }
   }
-  // output
+  // output into a file
+  ofstream myfile;
+  myfile.open("pendulum.txt");
+
   for(i = 0; i <= num_steps; i++){
     double t = i * tau;
-    printf("%9.6lf %9.6lf\n", t, y[0][i]);
+    // printf("%9.6lf %9.6lf\n", t, y[0][i]);
+    myfile << t << "\t" << y[0][i] << endl;
   }
+  myfile.close();
 
-  return 0;
+  //Drawing the obtained solution:
+  
+
+
 }
