@@ -19,32 +19,30 @@ void print_array(const int array_lenght, double* array1, double* array2){
 }
 
 // Funktion zur Berechnung des Mittelwertes von y/x
-double mean(const int array_lenght, double* array1, double* array2){
-  double mean = 0;
+void mean_calc(const int array_lenght, double* array1, double* array2){
+  double sigma = 0;
+  double mean, mean_squared;
+  mean = 0;
+  mean_squared = 0;
+
   for (int i = 0; i < array_lenght; i++) {
     mean += array2[i]/array1[i];
+    mean_squared += pow(array2[i]/array1[i],2.);
   }
   mean /= array_lenght;
-  cout << "mean y/x = " << mean << endl;
-  return mean;
-}
-
-// Funktion zur Berechnung der Standardabweichung von y/x
-void standard_deviation(const int array_lenght, double* array1, double* array2){
-  double sigma = 0;
-  for (int  i = 0; i < array_lenght; i++) {
-    sigma += pow(array2[i]/array1[i],2.);
-  }
-  sigma -= (array_lenght*pow(mean(array_lenght, array1, array2),2.));
-  sigma = sqrt(sigma);
+  mean *= mean;
+  mean_squared /= array_lenght;
+  cout << " <y/x>² = " << mean << endl;
+  cout << " <(y/x)²> = " << mean_squared << endl;
+  sigma = sqrt(mean_squared-mean);
   cout << "sigma = " << sigma << endl;
-
 }
+
 
 int main(void){
 
   print_array(array_lenght, x, y);
-  standard_deviation(array_lenght, x, y);
+  mean_calc(array_lenght, x, y);
 
   return 0;
 }
