@@ -14,6 +14,7 @@
 #include "TTree.h"
 #include "TRandom.h"
 #include "TGraph.h"
+#include <TGraph2D.h>
 #include <TSystem.h>
 #include <iostream>
 
@@ -43,7 +44,7 @@ void SetHistoStandardSettings(TH1* histo, Double_t XOffset = 1.2, Double_t YOffs
   histo->GetYaxis()->SetTitleFont(43);
   histo->GetXaxis()->SetTitleFont(43);
 
-  
+
 
 
   histo->SetMarkerStyle(20);
@@ -80,4 +81,3 @@ void SetLegendSettigns(TLegend* leg){
   leg->SetLineColor(0);
   leg->SetMargin(0.15);
 }
-

@@ -23,3 +23,13 @@ if [[ "$1" == *-*2* ]]; then
     root -l -b -q sheet_2_2.C\+\(\)
 
 fi
+
+if [[ "$1" == *-*3* ]]; then
+
+    rm -r Kepler
+    mkdir -p Kepler
+
+    echo "start compiling exercise... "
+    root -l -b -q sheet_3_1.C\+\(\)
+
+fi

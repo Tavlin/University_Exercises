@@ -85,6 +85,6 @@ void sheet_2_2(void){
   c1->SaveAs(Form("Pendulum/Pendulum_RK4.png"));
   t1->Delete();
   gpendulum->Delete();
-  delete(c1);
+  delete c1;
 
 }
