@@ -10,17 +10,21 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
+#include "header.h"
 
+////////////////////////////////////////////////////////////////////////////////
 const int N = 2; //Number of needed Dimensions
 const int num_steps = 1.e4; //Number of steps
 const double tau = 1.e-3; // Stepsize
 
 double y[N][num_steps+1]; // array of 2D points forming the Trajectory
+////////////////////////////////////////////////////////////////////////////////
 void sheet_2_2(void){
+
   //Initial Conditions
   y[0][0] = M_PI/8; //starting angle
   y[1][0] = 0; //starting velocity
-
+  /////////////////////////////////////////////////////////////////////////////
   int i,j;
 
   //RK 4th Order
@@ -41,6 +45,7 @@ void sheet_2_2(void){
       y[j][i] = y[j][i-1] + 1./6.*(k1[j]+2*k2[j]+2*k3[j]+k4[j]);
     }
   }
+  //////////////////////////////////////////////////////////////////////////////
   // output into a file
   ofstream myfile;
   myfile.open("pendulum.txt");
@@ -53,7 +58,33 @@ void sheet_2_2(void){
   myfile.close();
 
   //Drawing the obtained solution:
-  
+  TCanvas* c1 = new TCanvas("c1","",1600,900);
+  SetCanvasStandardSettings(c1);
+  c1->SetRightMargin(0.075);
+  c1->SetLeftMargin(0.05);
 
+  TLegend* t1 = new TLegend(0.35,0.00,0.75,0.10);
+  t1->SetFillStyle(0);
+  t1->SetBorderSize(0);
+  t1->SetTextFont(43);
+  t1->SetTextSize(40);
+
+  TGraph* gpendulum = new TGraph("pendulum.txt");
+  gpendulum->SetTitle("; #hat{t}; #hat{#phi}");
+  gpendulum->SetMarkerStyle(20);
+  gpendulum->SetMarkerSize(1);
+  gpendulum->SetMarkerColor(kBlue);
+  gpendulum->SetLineColor(kBlack);
+  gpendulum->SetLineWidth(1);
+
+  c1->cd();
+  gpendulum->Draw("LPA");
+  t1->AddEntry(gpendulum, "angle #phi (t) for a pendulum", "p");
+  t1->Draw("SAME");
+  c1->Update();
+  c1->SaveAs(Form("Pendulum/Pendulum_RK4.png"));
+  t1->Delete();
+  gpendulum->Delete();
+  delete(c1);
 
 }
