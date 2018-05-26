@@ -33,3 +33,13 @@ if [[ "$1" == *-*3* ]]; then
     root -l -b -q sheet_3_1.C\+\(\)
 
 fi
+
+if [[ "$1" == *-*4* ]]; then
+
+    # rm -r QM_with_Potential
+    # mkdir -p QM_with_Potential
+
+    echo "start compiling exercise... "
+    root -l -b -q sheet_4_1.C\+\(\)
+
+fi
