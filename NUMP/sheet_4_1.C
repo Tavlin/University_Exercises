@@ -10,8 +10,7 @@
 // y = (\psi , \phi , E)
 // f = (\phi , (x^2+x^4-E) \psi , 0)
 const int N = 3; // number of components of \vec{y} and \vec{f}
-double y_0_even[N] = { 0.0 , 1.0 , 0.0 }; // Anfangsbedingungen für P = + y(L/a=0).
-double y_0_odd[N] = { 0.0 , 1.0 , 0.0 }; // Anfangsbedingungen für P = - y(L/a=0).
+double y_0[N] = { 0.0 , 1.0 , 0.0 }; // Anfangsbedingungen y(L/a=0).
 // function computing f(y(t),t) * tau
 void f_times_tau(double *y_t, double x, double *f_times_tau_, double tau){
   if(N != 3){
@@ -100,7 +99,7 @@ double RK_1(bool output = false){
     myfile.close();
   }
   // *****
-  return y[num_steps][1];
+  return y[num_steps][0];
 }
 
 // RK which returns phi for Newton Raphso for even parity
@@ -127,7 +126,7 @@ double RK_0(bool output = false){
     myfile.close();
   }
   // *****
-  return y[num_steps][0];
+  return y[num_steps][1]; // to return phi for Newton Raphson method
 }
 // **********
 void sheet_4_1(void){
@@ -135,26 +134,17 @@ void sheet_4_1(void){
   int mode = 1; // 0 = even, 1 == odd
   // *****
   // initialize trajectories with initial conditions
-  if(mode == 0){
     x[0] = x_0;
     for(i1 = 0; i1 < N; i1++){
-      y[0][i1] = y_0_even[i1];
+      y[0][i1] = y_0[i1];
     }
-  }
-
-  if(mode == 1){
-    x[0] = x_0;
-    for(i1 = 0; i1 < N; i1++){
-      y[0][i1] = y_0_odd[i1];
-    }
-  }
 
   // **********
   // shooting method
   // **********
   // /*
   // intial condition (energy)
-  double E = 3; // vary this shit and see if something reasonable comes out
+  double E = 1; // vary this shit and see if something reasonable comes out
   // double E = 40.0;
   // double E = 90.0;
   fprintf(stderr, "E_num = %+10.6lf\n", E);
