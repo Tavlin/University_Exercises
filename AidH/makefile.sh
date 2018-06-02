@@ -21,11 +21,22 @@ fi
 
 if [[ "$1" == *-*4* ]]; then
     echo "start compiling exercise 4... "
-    g++ -o 4_1_Hemmer 4_1_Hemmer.cpp -Wall;
+    g++ -o 4_1_Hemmer 4_1_Tavlin.cpp -Wall;
 
     echo "execute exercise 4...";
     echo "";
-    time ./4_1_Hemmer;
+    time ./4_1_Tavlin;
+
+
+fi
+
+if [[ "$1" == *-*5* ]]; then
+    echo "start compiling exercise 5 No. 1... "
+    g++ -o 5_1_Hemmer 5_1_Tavlin.cpp -Wall;
+
+    echo "execute exercise 5 No.1 ...";
+    echo "";
+    time ./5_1_Tavlin;
 
 
 fi

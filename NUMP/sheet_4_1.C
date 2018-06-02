@@ -32,6 +32,7 @@ const double x_1 = 0.0; // = 0 needed for the Newton Raphson method to be able t
 double tau = (x_1 - x_0) / (double)num_steps; // step size
 double h = 0.000001; // finite difference for numerical derivative
 double dE_min = 0.0000001; // Newton-Raphson accuracy
+double dphi_min = 1.e-16;
 // **********
 
 // RK step (2nd order), step size tau
@@ -121,7 +122,6 @@ double RK_0(bool output = false){
     myfile.open("QM_HO_Even.txt");
     for(i1 = 0; i1 <= num_steps; i1++){
       myfile << x[i1] << "\t" << y[i1][0] << endl;
-      // cout << x[i1] << "\t" << y[i1][0] << endl;
     }
     myfile.close();
   }
@@ -131,7 +131,7 @@ double RK_0(bool output = false){
 // **********
 void sheet_4_1(void){
   int i1;
-  int mode = 1; // 0 = even, 1 == odd
+  int mode = 0; // 0 = even, 1 == odd
   // *****
   // initialize trajectories with initial conditions
     x[0] = x_0;
@@ -145,6 +145,7 @@ void sheet_4_1(void){
   // /*
   // intial condition (energy)
   double E = 1; // vary this shit and see if something reasonable comes out
+  double phi = 1.e-15;
   // double E = 40.0;
   // double E = 90.0;
   fprintf(stderr, "E_num = %+10.6lf\n", E);
@@ -169,6 +170,27 @@ void sheet_4_1(void){
       }
       E = E + dE;
       fprintf(stderr, "E_num = %+10.6lf\n", E);
+    }
+    while(1){
+      // change initial condition (energy)
+      y[0][1] = phi;
+      // RK computation of the trajectory (= wave function)
+      double psi_1_phi = RK_1(false)-1.;
+      // *****
+      // numerical derivative (d/dh) phi(x=0)
+      y[0][1] = phi-h;
+      double psi_1_phi_mi_h = RK_1(false);
+      y[0][1] = phi+h;
+      double psi_1_phi_pl_h = RK_1(false);
+      double dpsi_1_phi = (psi_1_phi_pl_h - psi_1_phi_mi_h) / (2.0 * h);
+      // *****
+      // Newton-Raphson step
+      double dphi = (-1)* psi_1_phi / dpsi_1_phi;
+      if(fabs(dphi) < dphi_min){
+        break;
+      }
+      phi = phi + dphi;
+      fprintf(stderr, "phi_num = %+2.16lf\n", phi);
     }
   }
 
