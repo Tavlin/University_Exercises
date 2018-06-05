@@ -32,7 +32,7 @@ fi
 
 if [[ "$1" == *-*5* ]]; then
     echo "start compiling exercise 5 No. 1... "
-    g++ -o 5_1_Hemmer 5_1_Tavlin.cpp -Wall;
+    g++ -o 5_1_Hemmer 5_1_Tavlin.cpp -Wall -std=c++11;
 
     echo "execute exercise 5 No.1 ...";
     echo "";

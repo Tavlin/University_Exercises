@@ -64,6 +64,7 @@ int sheet_5_1(void){
         A[i1][i2] = 0;
       }
     }
+    // place of the charged particle
     if(i1 == int(npo)/4){
       b[i1] = 10;
     }
