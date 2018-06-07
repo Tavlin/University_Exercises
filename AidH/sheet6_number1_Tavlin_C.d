@@ -31,5 +31,6 @@
 ./sheet6_number1_Tavlin_C.so: /cvmfs/alice.cern.ch/x86_64-2.6-gnu-4.1.2/Packages/ROOT/v5-34-30-alice7-14/include/Math/ParamFunctor.h
 ./sheet6_number1_Tavlin_C.so: /cvmfs/alice.cern.ch/x86_64-2.6-gnu-4.1.2/Packages/ROOT/v5-34-30-alice7-14/include/TMath.h
 ./sheet6_number1_Tavlin_C.so: /cvmfs/alice.cern.ch/x86_64-2.6-gnu-4.1.2/Packages/ROOT/v5-34-30-alice7-14/include/TError.h
+./sheet6_number1_Tavlin_C.so: /cvmfs/alice.cern.ch/x86_64-2.6-gnu-4.1.2/Packages/ROOT/v5-34-30-alice7-14/include/TRandom.h
 ./sheet6_number1_Tavlin_C.so: /cvmfs/alice.cern.ch/x86_64-2.6-gnu-4.1.2/Packages/ROOT/v5-34-30-alice7-14/include/cintdictversion.h /cvmfs/alice.cern.ch/x86_64-2.6-gnu-4.1.2/Packages/ROOT/v5-34-30-alice7-14/include/RVersion.h
 sheet6_number1_Tavlin_C__ROOTBUILDVERSION= 5.34/30

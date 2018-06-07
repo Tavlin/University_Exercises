@@ -14,13 +14,13 @@ using namespace std;
 const Int_t n_iter = 1.e3; // number of Collisions
 const Double_t sigma = 6.; // 60 mb = 6 fm²
 const Double_t d = sqrt(sigma/TMath::Pi()); // max distance in xy plane between to collinding nuclei
-const Double_t thick = 0.64; // fm thickness of the wood saxon
+const Double_t thick = 0.54; // fm thickness of the wood saxon
 const Double_t r = 6.62; //radii of the nuclei in fm
 const Double_t R = 7.;
 
 
 Double_t wood_saxon(Double_t x){
-  return 1./ (1. + exp((x-2.*r)/(thick))); // double r for "negative" values so to say
+  return 1./ (1. + exp((x-r)/(thick))); // double r for "negative" values so to say
 }
 
 // TF1* f = new TF1("f", "wood_saxon(x)", 0.,r);
@@ -59,8 +59,13 @@ class Kern{
 
 
 void sheet6_number1_Tavlin(void){
-  TF1* f = new TF1("f", "wood_saxon(x)", 0.,2.*r);
+  TF1* f = new TF1("f", "wood_saxon(x)", 0.,R);
+
+  // TF1* f = new TF1("f", "1./ (1. + exp((x-[0])/([1])))", 0., R);
+  // f->SetParameter(0, r);
+	// f->SetParameter(1, thick);
   gRandom->SetSeed(time(NULL)); // seeding random numbers
+  srand(time(NULL)); // seeding rand
 
   int N_coll[n_iter]; //initialize N_coll
   int A = 208;
@@ -69,18 +74,30 @@ void sheet6_number1_Tavlin(void){
   for(int b = 0; b <= 8; b += 4){
 
     for (int i = 0; i < n_iter; i++) {
-      Kern *Pb_1 = new Kern(A, r);
-      Kern *Pb_2 = new Kern(A, r);
+      Kern *Pb_1 = new Kern(A, R);
+      Kern *Pb_2 = new Kern(A, R);
       N_coll[i] = 0;
 
       // change y coords so the nuclei have a difference of b between their centers
       for (int j = 0; j < A; j++) {
-        Pb_1->nuklei[j]->x_position = f->GetRandom(0, 2.*R) + b - R;
-        //Double_t rest_y_1 = Pb_1->nuklei[j]->x_position;
-        Pb_1->nuklei[j]->y_position = f->GetRandom(0, 2.*R) - R;
-        Pb_2->nuklei[j]->x_position = f->GetRandom(0, 2.*R) - R;
-        //Double_t rest_y_2 = Pb_2->nuklei[j]->x_position;
-        Pb_2->nuklei[j]->y_position = f->GetRandom(0, 2.*R) - R;
+        int check = rand() % 2; // either 1 or 0
+        if(check == 0){
+          Pb_1->nuklei[j]->x_position = f->GetRandom(0, R) + b;
+          //Double_t rest_y_1 = Pb_1->nuklei[j]->x_position;
+          Pb_1->nuklei[j]->y_position = f->GetRandom(0, R);
+          Pb_2->nuklei[j]->x_position = f->GetRandom(0, R);
+          //Double_t rest_y_2 = Pb_2->nuklei[j]->x_position;
+          Pb_2->nuklei[j]->y_position = f->GetRandom(0, R);
+        }
+
+        if(check == 1){
+          Pb_1->nuklei[j]->x_position = -(f->GetRandom(0, R)) + b;
+          //Double_t rest_y_1 = Pb_1->nuklei[j]->x_position;
+          Pb_1->nuklei[j]->y_position = -f->GetRandom(0, R);
+          Pb_2->nuklei[j]->x_position = -f->GetRandom(0, R);
+          //Double_t rest_y_2 = Pb_2->nuklei[j]->x_position;
+          Pb_2->nuklei[j]->y_position = -f->GetRandom(0, R);
+        }
 
       }
       for (int k = 0; k < A; k++) {
