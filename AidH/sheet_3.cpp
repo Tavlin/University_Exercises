@@ -30,10 +30,18 @@ void mean_calc(const int array_lenght, double* array1, double* array2){
     mean_squared += pow(array2[i]/array1[i],2.);
   }
   mean /= array_lenght;
+<<<<<<< HEAD
   mean *= mean;
   mean_squared /= array_lenght;
   cout << " <y/x>² = " << mean << endl;
   cout << " <(y/x)²> = " << mean_squared << endl;
+=======
+  cout << "mean = " << mean << endl;
+  mean *= mean;
+  mean_squared /= array_lenght;
+  cout << " <y/x>Â² = " << mean << endl;
+  cout << " <(y/x)Â²> = " << mean_squared << endl;
+>>>>>>> aeb99fc5d81f72b1734f496af5ea1caa0021f271
   sigma = sqrt(mean_squared-mean);
   cout << "sigma = " << sigma << endl;
 }
