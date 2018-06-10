@@ -12,8 +12,8 @@
 // **********
 // **********
 // size of A, b and x
-const int N = 1e3;
-const int npo = N + 1;
+const int N = 500;
+const int npo = 2*N + 1;
 const double R = 100;
 // matrix A (elements will be modified during computation)
 double A[npo][npo];
@@ -66,7 +66,7 @@ int sheet_5_1(void){
     }
     // place of the charged particle
     if(i1 == int(npo)/4){
-      b[i1] = 10;
+      b[i1] = 1./a;
     }
     else{
       b[i1] = 0;
