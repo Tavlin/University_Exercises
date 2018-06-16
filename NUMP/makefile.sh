@@ -60,8 +60,9 @@ fi
 if [[ "$1" == *-*6* ]]; then
 
     echo "start compiling exercise... "
-    g++ -std=c++14 -o a ConjGrad.cpp
-    ./a
-    root -l -q -b plot.C\+\(\)
+    g++ -std=c++14 -o a 6_1.cpp
+    time ./a
+    root -l -b -q plot.C\+\(\)
+
 
 fi

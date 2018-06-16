@@ -32,37 +32,36 @@ vec conjugateGradientSolver( const matrix &A, const vec &B );
 int main()
 {
   int i1, i2, i3;
-  vec B(n, 0.0);
-  matrix A(n);
-  for (int i = 0 ; i < n ; i++)
-   A[i].resize(n,0);
+  vec B(n*n, 0.0);
+  matrix A(n*n);
+  for (int i = 0 ; i < (n*n) ; i++)
+   A[i].resize(n*n,0);
 
-  // generate matrix A and vector b
-  for(i1 = 0; i1 < n; i1++){
-    for(i2 = 0; i2 < n; i2++){
-      // diagonal elements of A
-      if(i2 == i1){
-        A[i1][i2] = +2./pow(a,2);
-      }
-      // ofdiagonal elements of A
-      else if (i2 == i1-1 || i2 == i1 +1){
-          A[i1][i2] = -1./pow(a,2);
-      }
-      // else{
-      //   A[i1][i2] = 0;
-      // }
-    }
-    // place of the charged particle
-    if(i1 == int(n)/2){
-      B[i1] = -1./a;
-    }
-    // else{
-    //   B[i1] = 0;
-    // }
-
-  }
-   // matrix A = { { 4, 1 }, { 1, 3 } };
-   // vec B = { 1, 2 };
+   // generate A and b:
+   for (int i = 0; i < n*n; i++) {
+     for (int j = 0; j < n*n; j++) {
+       // diagonal
+       if(i == j){
+         A[i][j] = +4./(a*a); // changed - to +
+       }
+       // one above and below diagonal for rest of d^2/dx^2
+       else if(i+1 == j && i%n != 0){
+         A[i][j] = -1./(a*a);  // changed + to -
+       }
+       else if(i-1 == j && j%n != 0){
+         A[i][j] = -1./(a*a);  // changed + to -
+       }
+       // two of diagonals for rest of d^2/dy^2
+       else if(i == j+n || i == j-n){
+         A[i][j] = -1./(a*a);  // changed + to -
+       }
+     }
+     // b as delta distribution or so
+     // at (0,0)
+     if(i == (n*n)/2){
+       B[i] = -1./(a); // normalization needs to be checked!
+     }
+   }
 
    vec X = conjugateGradientSolver( A, B );
 
@@ -73,12 +72,12 @@ int main()
    print( "\nCheck Ax:", matrixTimesVector( A, X ) );
 
    // output
-   ofstream myfile;
-   myfile.open("PoissonEq.txt");
-   for(i1 = 0; i1 < n; i1++){
-     myfile << (i1-(int)n/2)*a << "\t" << X[i1] << endl;
+   ofstream myfile2D;
+   myfile2D.open("PoissonEq2DEXTRA.txt");
+   for(i1 = 0; i1 < n*n; i1++){
+     myfile2D << ((i1%n)-(int)n/2)*a << "\t" << ((i1/n)-(int)n/2)*a << "\t" << X[i1] << endl;
    }
-   myfile.close();
+   myfile2D.close();
 }
 
 
