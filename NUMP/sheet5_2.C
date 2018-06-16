@@ -7,7 +7,7 @@
 #include "header.h"
 
 // define size
-const int N = 10; //up to 400
+const int N = 100; //up to 400
 // define A, U, L and P
 double A[N][N], U[N][N], L[N][N], P[N][N], B[N][N];
 // define x and y and b
@@ -67,7 +67,9 @@ void sheet5_2(void){
     }
     // swap p-th row with i-th row in P
     P[p][p] = 0;
+    P[i][i] = 0;
     P[p][i] = 1;
+    P[i][p] = 1;
 
     // swap p_th row with i-th row
     for (int k = 0; k < N; k++) {
