@@ -50,8 +50,18 @@ if [[ "$1" == *-*5* ]]; then
     # mkdir -p QM_with_Potential
 
     echo "start compiling exercise... "
-    root -l -b -q sheet_5_1_2.C\+\(\)
+    root -l -b -q sheet_5_1.C\+\(\)
     # g++ -o a sheet_5_1_2.cpp
 
+
+fi
+
+
+if [[ "$1" == *-*6* ]]; then
+
+    echo "start compiling exercise... "
+    g++ -std=c++14 -o a ConjGrad.cpp
+    ./a
+    root -l -q -b plot.C\+\(\)
 
 fi
