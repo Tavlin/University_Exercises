@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <omp.h>
 using namespace std;
 
 // #define oneD
@@ -27,6 +28,7 @@ using matrix = vector<vec>;            // matrix
 // calculate vector addition
 vec vec_plus_vec(vec &a, vec &b){
   vec x(a.size());
+  #pragma omp parallel for
   for (int i = 0; i < a.size(); i++) {
     x[i] = a[i] + b[i];
   }
@@ -36,6 +38,7 @@ vec vec_plus_vec(vec &a, vec &b){
 // calculate vector substraction
 vec vec_minus_vec(vec &a, vec &b){
   vec x(a.size());
+  #pragma omp parallel for
   for (int i = 0; i < a.size(); i++) {
     x[i] = a[i] - b[i];
   }
@@ -45,6 +48,7 @@ vec vec_minus_vec(vec &a, vec &b){
 // calculate vector a times scalar s
 vec vec_times_scalar(vec &a, double s){
   vec x(a.size());
+  #pragma omp parallel for
   for (int i = 0; i < a.size(); i++) {
     x[i] = s*a[i];
   }
@@ -62,6 +66,7 @@ vec matrix_times_vec(matrix &A, vec &y){
   int size = y.size();
   vec x(size);
 
+  #pragma omp parallel for
   for (int i = 0; i < size; i++) {
     x[i] = inner_product(A[i].begin(), A[i].end(), y.begin(), 0.0);
   }
@@ -88,6 +93,7 @@ vec conjugate_gradient_method(matrix A, vec b){
 
   // starting r
   vec r(dim);
+  #pragma omp parallel for
   for(int i = 0; i < dim; i++){
     r[i] = b[i] - w[i];
   }
@@ -126,8 +132,8 @@ vec conjugate_gradient_method(matrix A, vec b){
 
 ////////////////////////////////////////////////////////////////////////////////
 
-int main()
-{
+int main(void){
+  
   int i1, i2, i3;
 
   #ifdef oneD
@@ -208,4 +214,6 @@ int main()
   }
   myfile2D.close();
   #endif
+
+  return 0;
 }
