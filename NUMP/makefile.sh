@@ -61,10 +61,10 @@ if [[ "$1" == *-*6* ]]; then
 
     rm c
     echo "start compiling exercise... "
-    g++ -std=c++14 -fopenmp -o c 6_2.cpp
-    time ./c
-    # g++ -std=c++14 -fopenmp -o a 6_1.cpp
-    # time ./a
+    # g++ -std=c++14 -fopenmp -o c 6_2.cpp
+    # time ./c
+    g++ -std=c++14 -fopenmp -o a 6_1.cpp
+    time ./a
     # root -l -b -q plot.C\+\(\)
 
 fi

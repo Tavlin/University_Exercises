@@ -8,15 +8,15 @@
 #include <omp.h>
 using namespace std;
 
-// #define oneD
-#define twoD
+#define oneD
+// #define twoD
 
 const int MAX_ITER = 1.0e4;            // maximum number of iterations
-const double NEARZERO = 1.0e-10;       // interpretation of "zero"
+const double NEARZERO = 1.0e-16;       // interpretation of "zero"
 const double error_margin = 1.0e-10;   // min error
 const int N = 50;                     // Number of lattive points in 1D > 0
 const int n = 2*N + 1;                 // Number of lattice points in 1D
-const double R = 10;                   // radius of the sphere/ whatever
+const double R = 1.e1;                   // radius of the sphere/ whatever
 const double a = 2.*R/(double)n;       // gap between to lattice points
 
 using vec    = vector<double>;         // vector
@@ -27,8 +27,8 @@ using matrix = vector<vec>;            // matrix
 
 // calculate vector addition
 vec vec_plus_vec(vec &a, vec &b){
-  vec x(a.size());
-  #pragma omp parallel for
+  vec x(a.size(),0);
+  // #pragma omp parallel for
   for (int i = 0; i < a.size(); i++) {
     x[i] = a[i] + b[i];
   }
@@ -37,8 +37,8 @@ vec vec_plus_vec(vec &a, vec &b){
 
 // calculate vector substraction
 vec vec_minus_vec(vec &a, vec &b){
-  vec x(a.size());
-  #pragma omp parallel for
+  vec x(a.size(),0);
+  // #pragma omp parallel for
   for (int i = 0; i < a.size(); i++) {
     x[i] = a[i] - b[i];
   }
@@ -47,8 +47,8 @@ vec vec_minus_vec(vec &a, vec &b){
 
 // calculate vector a times scalar s
 vec vec_times_scalar(vec &a, double s){
-  vec x(a.size());
-  #pragma omp parallel for
+  vec x(a.size(),0);
+  // #pragma omp parallel for
   for (int i = 0; i < a.size(); i++) {
     x[i] = s*a[i];
   }
@@ -57,20 +57,32 @@ vec vec_times_scalar(vec &a, double s){
 
 // calculate inner product of two vectors a and b
 double vec_times_vec(vec &a, vec &b){
-  double x = inner_product(a.begin(), a.end(), b.begin(), 0.0);
-  return x;
+  double xy = 0;
+  // #pragma omp parallel for
+  for (int i = 0; i < a.size(); i++) {
+    xy += a[i]*b[i];
+  }
+  return xy;
 }
 
+double vec_square(vec &a){
+  double xy = 0;
+  // #pragma omp parallel for
+  for (int i = 0; i < a.size(); i++) {
+    xy += pow(a[i],2);
+  }
+  return xy;
+}
 // calculate matrix A times vector y
 vec matrix_times_vec(matrix &A, vec &y){
   int size = y.size();
-  vec x(size);
+  vec xyz(size,0);
 
-  #pragma omp parallel for
+  // #pragma omp parallel for
   for (int i = 0; i < size; i++) {
-    x[i] = inner_product(A[i].begin(), A[i].end(), y.begin(), 0.0);
+    xyz[i] = inner_product(A[i].begin(), A[i].end(), y.begin(), 0.0);
   }
-  return x;
+  return xyz;
 }
 
 // conjugate gradient method
@@ -80,42 +92,47 @@ vec conjugate_gradient_method(matrix A, vec b){
 
   // obtaining the dimnesion this is done with
   int dim = b.size();
-  vec x_new(dim);
-  vec r_new(dim);
-  vec p_new(dim);
-  vec temp(dim);
+  vec x_new(dim,0);
+  vec r_new(dim,0);
+  vec p_new(dim,0);
+  vec temp(dim,0);
 
   // starting x-vector, only 0, can be changed to only 1 or whatever
   vec x(dim, 0.0);
 
   //calculating A * x_0
-  vec w = matrix_times_vec(A,x);
+  //vec w = matrix_times_vec(A,x);
 
   // starting r
   vec r(dim);
   #pragma omp parallel for
   for(int i = 0; i < dim; i++){
-    r[i] = b[i] - w[i];
+    r[i] = b[i]; //- w[i];
   }
 
   // starting p
   vec p = r;
   //calculating A * p_0
   vec z = matrix_times_vec(A,p);
+  for(int i = 0; i < z.size(); i++){
+    if(z[i] != 0)
+    printf("A*p[%d] = %lf\n",i, z[i]);
+  }
 
   // actual calculation
-  for (k = 0; k < MAX_ITER; k++) {
-    alpha = vec_times_vec(r,r)/max(vec_times_vec(p,z), NEARZERO);
+  while(k <= MAX_ITER){
+    alpha = vec_square(r)/max(vec_times_vec(p,z), NEARZERO);
 
     temp = vec_times_scalar(p, alpha);
     x_new = vec_plus_vec(x, temp);
 
     temp = vec_times_scalar(z, alpha);
     r_new = vec_minus_vec(r, temp);
-    if(sqrt(vec_times_vec(r_new, r_new)) < error_margin){
+    printf("|r| = %.10lf\n",sqrt(vec_square(r_new)));
+    if(sqrt(vec_square(r_new)) <= error_margin){
       break;
     }
-    beta = vec_times_vec(r_new,r_new)/max(vec_times_vec(r,r),NEARZERO);
+    beta = vec_square(r_new)/max(vec_square(r),NEARZERO);
     temp = vec_times_scalar(p, beta);
     p_new = vec_plus_vec(r_new, temp);
     x = x_new;
@@ -125,15 +142,17 @@ vec conjugate_gradient_method(matrix A, vec b){
     if(k%10 == 0){
       printf("k = %i\n", k);
     }
+    k++;
   }
   printf("Anzahl Iterationen: %i\n", k);
+  printf("|r| = %.10lf\n",sqrt(vec_square(r_new)));
   return x_new;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 int main(void){
-  
+
   int i1, i2, i3;
 
   #ifdef oneD
