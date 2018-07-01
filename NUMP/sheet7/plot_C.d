@@ -56,6 +56,7 @@
 ./plot_C.so: /usr/include/root/TVirtualHistPainter.h
 ./plot_C.so: /usr/include/root/TSystem.h /usr/include/root/TInetAddress.h
 ./plot_C.so: /usr/include/root/TTimer.h /usr/include/root/TSysEvtHandler.h
-./plot_C.so: /usr/include/root/TTime.h
+./plot_C.so: /usr/include/root/TTime.h /usr/include/root/TImage.h
+./plot_C.so: /usr/include/root/TAttImage.h
 ./plot_C.so: /usr/include/root/cintdictversion.h /usr/include/root/RVersion.h
 plot_C__ROOTBUILDVERSION= 5.34/30

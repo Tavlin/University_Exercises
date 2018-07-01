@@ -14,6 +14,7 @@ using vec    = vector<double>;         // vector
 using matrix = vector<vec>;            // matrix
 double t = 0;                          // initial time
 double dt = 0.01;                      //stepsize in t
+double a = 0.1;
 
 int main(void){
   int N1 = 7;
@@ -108,18 +109,19 @@ int main(void){
   matrix* pQ = &B;
   vec x(0,N);
 
-  for (int l = 0; l < N; l++) {
-    // output
-    string str = "Output";
-    string number = to_string(l);
-    str.append(number);
-    str.append(".txt");
-    ofstream output;
-    output.open(str);
-    for (int i = 0; i < 3001; i++) {
+    for (int i = 0; i < 301; i++) {
       t = i*dt;
       x = GetSolution(pA, pQ, t);
-      output << t << "\t" << x[l] << endl;
+      string str = "Output";
+      string number = to_string(i);
+      str.append(number);
+      str.append(".txt");
+      ofstream output;
+      output.open(str);
+      for (int l = 0; l < N; l++) {
+        // output
+        // output << t << "\t" << x[l] << endl;
+        output << (l%N1)*a << "\t" << (l/N1)*a << "\t" << x[l] << endl;
     }
     output.close();
   }
