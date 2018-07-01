@@ -22,7 +22,7 @@ for (int j = 0; j < size ; j++) {
   double sum = 0;
   for (int n1 = 0; n1 < N; n1++) {
     for (int n2 = 0; n2 < N; n2++) {
-      sum += (*Q)[j][(n1*N)+n2]*(*Q)[n1*N][0]*(*Q)[(n1*N)+n2][0]*cos(omega[n2+(n1*N)]*t);
+      sum += (*Q)[(n1*N)+n2][j]*(*Q)[n1*N+n2][0]*cos(sqrt(omega[n2+(n1*N)])*t);
     }
   }
   x[j] = sum;
