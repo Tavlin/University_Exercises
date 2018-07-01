@@ -13,7 +13,7 @@ using namespace std;
 using vec    = vector<double>;         // vector
 using matrix = vector<vec>;            // matrix
 double t = 0;                          // initial time
-double dt = 0.01;                      //stepsize in t
+double dt = 0.5;                      //stepsize in t
 double a = 0.1;
 
 int main(void){
@@ -109,7 +109,7 @@ int main(void){
   matrix* pQ = &B;
   vec x(0,N);
 
-    for (int i = 0; i < 301; i++) {
+    for (int i = 0; i < 31; i++) {
       t = i*dt;
       x = GetSolution(pA, pQ, t);
       string str = "Output";

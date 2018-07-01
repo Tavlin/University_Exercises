@@ -49,7 +49,7 @@ void SetHistoStandardSettings(TH1* histo, Double_t XOffset = 1.2, Double_t YOffs
 
   histo->SetMarkerStyle(20);
   histo->SetMarkerSize(1.5);
-  histo->SetLineWidth(1.5);
+  histo->SetLineWidth(2);
   histo->SetLineColor(kBlack);
   histo->SetMarkerColor(kBlack);
 }
