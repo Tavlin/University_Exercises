@@ -16,7 +16,7 @@ void plot(){
   t1->SetTextFont(43);
   t1->SetTextSize(40);
 
-  TGraph* graph15 = new TGraph("Output.txt");
+  TGraph* graph15 = new TGraph("Output0.txt");
   graph15->SetTitle("; #hat{t}; #hat{x}(#hat{t})");
   graph15->SetMarkerStyle(20);
   graph15->SetMarkerSize(1);
@@ -30,7 +30,7 @@ void plot(){
   t1->AddEntry(graph15, "Kristall Oszi", "p");
   t1->Draw("SAME");
   c1->Update();
-  c1->SaveAs("x48.png");
+  c1->SaveAs("x0.png");
 
   t1->Delete();
   graph15->Delete();

@@ -2,9 +2,11 @@
 #include "GetSolution.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
+// #define FBCplus
 #define FBC
 // #define PBC
 
@@ -60,6 +62,31 @@ int main(void){
   #endif
   // ========================
 
+  #ifdef FBCplus
+  // initialize matrix A and B with free BC only of N1xN1
+  for(int i1 = 0; i1 < N; i1++)
+  {
+    A[i1][i1] = 4.0;
+    B[i1][i1] = 1.;
+    if(i1 < N-1){
+      A[i1+1][i1] = -1.;
+      A[i1][i1+1] = -1.;
+    }
+    if(i1 < (N-N1)){
+      if(i1 >= N1 && i1 < 2*N1-1){
+        A[i1+N1][i1] = -0.2;
+        A[i1][i1+N1] = -0.2;
+      }
+      else{
+        A[i1+N1][i1] = -1.;
+        A[i1][i1+N1] = -1.;
+      }
+    }
+
+  }
+  #endif
+  // ========================
+
 
 
   JacobiRotation(A,B);
@@ -81,15 +108,22 @@ int main(void){
   matrix* pQ = &B;
   vec x(0,N);
 
-  // output
-  ofstream output;
-  output.open("Output.txt");
-  for (int i = 0; i < 3001; i++) {
-    t = i*dt;
-    x = GetSolution(pA, pQ, t);
-    output << t << "\t" << x[48] << endl;
+  for (int l = 0; l < N; l++) {
+    // output
+    string str = "Output";
+    string number = to_string(l);
+    str.append(number);
+    str.append(".txt");
+    ofstream output;
+    output.open(str);
+    for (int i = 0; i < 3001; i++) {
+      t = i*dt;
+      x = GetSolution(pA, pQ, t);
+      output << t << "\t" << x[l] << endl;
+    }
+    output.close();
   }
-  output.close();
+
 
   return 0;
 }

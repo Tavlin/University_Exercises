@@ -15,14 +15,14 @@ vec GetSolution(matrix* A ,matrix* Q, double t){
   //============================================================================
   // getting all the eigenvalues from matrix A
   for (int i = 0; i < size; i++) {
-    omega[i] = (*A)[i][i];
+    omega[i] = sqrt((*A)[i][i]);
   }
 //==============================================================================
 for (int j = 0; j < size ; j++) {
   double sum = 0;
   for (int n1 = 0; n1 < N; n1++) {
     for (int n2 = 0; n2 < N; n2++) {
-      sum += (*Q)[(n1*N)+n2][j]*(*Q)[n1*N+n2][0]*cos(sqrt(omega[n2+(n1*N)])*t);
+      sum += (*Q)[(n1*N)+n2][j]*(*Q)[n1*N+n2][0]*cos(omega[n2+(n1*N)]*t);
     }
   }
   x[j] = sum;
